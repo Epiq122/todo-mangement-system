@@ -3,6 +3,7 @@ package dev.robgleason.todo.service;
 
 import dev.robgleason.todo.dto.TodoDto;
 import dev.robgleason.todo.entity.Todo;
+import dev.robgleason.todo.exception.ResourceNotFoundException;
 import dev.robgleason.todo.repository.TodoRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,5 +27,13 @@ public class TodoServiceImpl implements TodoService {
 
 
         return savedTodoDto;
+    }
+
+    @Override
+    public TodoDto getTodo(Long Id) {
+
+        Todo todo = todoRepository.findById(Id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id " + Id));
+        return modelMapper.map(todo, TodoDto.class);
     }
 }
