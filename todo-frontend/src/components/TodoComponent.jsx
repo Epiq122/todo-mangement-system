@@ -1,14 +1,26 @@
 import React, { useState } from "react";
+import { addTodo } from "../services/TodoService.js";
+import { useNavigate } from "react-router-dom";
 
 const TodoComponent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
 
-  function saveTodo(e) {
+  const navigate = useNavigate();
+
+  function handleSave(e) {
     e.preventDefault();
     const todo = { title, description, completed };
-    console.log(todo);
+
+    addTodo(todo)
+      .then((data) => {
+        console.log("Todo saved successfully:", data);
+        navigate("/todos");
+      })
+      .catch((error) => {
+        console.error("There was a problem saving the todo:", error);
+      });
   }
 
   return (
@@ -54,7 +66,10 @@ const TodoComponent = () => {
                   <option value={true}>Yes</option>
                 </select>
               </div>
-              <button className="btn btn-success" onClick={(e) => saveTodo(e)}>
+              <button
+                className="btn btn-success"
+                onClick={(e) => handleSave(e)}
+              >
                 Submit
               </button>
             </form>
