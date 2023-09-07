@@ -1,28 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAllTodos } from "../services/TodoService.js";
 
 const ListTodoComponent = () => {
-  const dummyData = [
-    {
-      id: 1,
-      title: "Learn Core Java",
-      description: "Make projects for learning",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Learn Typescipt",
-      description: "Make projects for learning",
-      completed: true,
-    },
-    {
-      id: 3,
-      title: "Learn Spring JPA",
-      description: "Make projects for learning",
-      completed: false,
-    },
-  ];
+  const [todos, setTodos] = useState([]);
 
-  const [todos, setTodos] = useState(dummyData);
+  useEffect(() => {
+    getAllTodos()
+      .then((data) => setTodos(data))
+      .catch((error) =>
+        console.error("There was a problem listing the todos:", error)
+      );
+  }, []);
 
   return (
     <div className="container">
