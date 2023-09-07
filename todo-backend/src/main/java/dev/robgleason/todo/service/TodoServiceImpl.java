@@ -48,4 +48,13 @@ public class TodoServiceImpl implements TodoService {
     }
 
 
+    @Override
+    public TodoDto updateTodo(TodoDto todo) {
+        Todo existingTodo = todoRepository.findById(todo.getId()).get();
+        existingTodo.setTitle(todo.getTitle());
+        existingTodo.setDescription(todo.getDescription());
+        existingTodo.setCompleted(todo.getCompleted());
+        Todo updatedTodo = todoRepository.save(existingTodo);
+        return modelMapper.map(updatedTodo, TodoDto.class);
+    }
 }
