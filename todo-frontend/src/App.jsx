@@ -5,6 +5,7 @@ import ListTodoComponent from "./components/ListTodoComponent.jsx";
 import HeaderComponent from "./components/HeaderComponent.jsx";
 import FooterComponent from "./components/FooterComponent.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TodoComponent from "./components/TodoComponent.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -18,6 +19,8 @@ function App() {
           <Route path="/" element={<ListTodoComponent />} />
           {/*http://localhost:8080/todos*/}
           <Route path="/todos" element={<ListTodoComponent />} />
+          {/*http://localhost:8080/add-todo*/}
+          <Route path="/add-todo" element={<TodoComponent />} />
         </Routes>
 
         <FooterComponent />
