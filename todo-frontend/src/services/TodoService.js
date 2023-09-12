@@ -38,19 +38,40 @@ export const addTodo = (todo) => {
     });
 };
 
-export const getTodo = (id)=>{
-    return fetch(BASE_REST_API_URL + "/" + id)
+export const getTodo = (id) => {
+  return fetch(BASE_REST_API_URL + "/" + id)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return response.json();
-     })
-.then((data) => {
-    return data;
-})
+    })
+    .then((data) => {
+      return data;
+    })
     .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
+      console.error("There was a problem with the fetch operation:", error);
     });
+};
 
-}
+export const updateTodo = (id, todo) => {
+  return fetch(BASE_REST_API_URL + "/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todo),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+};

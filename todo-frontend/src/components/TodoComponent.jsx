@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addTodo, getTodo } from "../services/TodoService.js";
+import { addTodo, getTodo, updateTodo } from "../services/TodoService.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TodoComponent = () => {
@@ -11,11 +11,21 @@ const TodoComponent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  function handleSave(e) {
+  function handleSaveOrUpdate(e) {
     e.preventDefault();
     const todo = { title, description, completed };
 
-    addTodo(todo)
+    if (id) {
+      updateTodo(id, todo)
+        .then((response) => {
+          console.log("Todo updated successfully:", response);
+          navigate("/todos");
+        })
+        .catch((error) => {
+          console.error("There was a problem updating the todo:", error);
+        });
+    } else {
+      addTodo(todo)
         .then((data) => {
           console.log("Todo saved successfully:", data);
           navigate("/todos");
@@ -23,6 +33,7 @@ const TodoComponent = () => {
         .catch((error) => {
           console.error("There was a problem saving the todo:", error);
         });
+    }
   }
 
   function pageTitle() {
@@ -51,59 +62,59 @@ const TodoComponent = () => {
   }, [id]);
 
   return (
-      <div className="container">
-        <div className="row mt-4">
-          <div className="card col-md-6 offset-md-3">
-            {pageTitle()}
-            <div className="card-body">
-              <form>
-                <div className="form-group mb-3">
-                  <label htmlFor="title">Todo Title:</label>
-                  <input
-                      type="text"
-                      className="form-control"
-                      id="title"
-                      placeholder="Enter Todo Title"
-                      name="title"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                  />
-                </div>
-                <div className="form-group mb-3">
-                  <label htmlFor="description">Todo Description:</label>
-                  <input
-                      type="text"
-                      className="form-control"
-                      id="description"
-                      placeholder="Enter Todo Description"
-                      name="description"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-                <div className="form-group mb-3">
-                  <label htmlFor="completed">Todo Completed:</label>
-                  <select
-                      className="form-control"
-                      id="completed"
-                      value={completed}
-                      onChange={(e) => setCompleted(e.target.value)}
-                  >
-                    <option value={false}>No</option>
-                    <option value={true}>Yes</option>
-                  </select>
-                </div>
-                <button
-                    className="btn btn-success"
-                    onClick={(e) => handleSave(e)}
+    <div className="container">
+      <div className="row mt-4">
+        <div className="card col-md-6 offset-md-3">
+          {pageTitle()}
+          <div className="card-body">
+            <form>
+              <div className="form-group mb-3">
+                <label htmlFor="title">Todo Title:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="title"
+                  placeholder="Enter Todo Title"
+                  name="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="description">Todo Description:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="description"
+                  placeholder="Enter Todo Description"
+                  name="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="completed">Todo Completed:</label>
+                <select
+                  className="form-control"
+                  id="completed"
+                  value={completed}
+                  onChange={(e) => setCompleted(e.target.value)}
                 >
-                  Submit
-                </button>
-              </form>
-            </div>
+                  <option value={false}>No</option>
+                  <option value={true}>Yes</option>
+                </select>
+              </div>
+              <button
+                className="btn btn-success"
+                onClick={(e) => handleSaveOrUpdate(e)}
+              >
+                Submit
+              </button>
+            </form>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
