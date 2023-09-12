@@ -35,6 +35,17 @@ const ListTodoComponent = () => {
         console.error("There was a problem deleting the todo:", error)
       );
   }
+
+  function markCompleteTodo(id) {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.completed = true;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  }
+
   return (
     <div className="container">
       <h2 className="text-center mt-4">List of Todos</h2>
@@ -70,6 +81,13 @@ const ListTodoComponent = () => {
                     onClick={() => removeTodo(todo.id)}
                   >
                     Delete
+                  </button>
+                  <button
+                    className="btn btn-success"
+                    style={{ marginLeft: "10px" }}
+                    onClick={() => markCompleteTodo(todo.id)}
+                  >
+                    Complete
                   </button>
                 </td>
               </tr>
