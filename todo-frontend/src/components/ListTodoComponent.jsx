@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllTodos } from "../services/TodoService.js";
+import { deleteTodo, getAllTodos } from "../services/TodoService.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ListTodoComponent = () => {
@@ -24,6 +24,17 @@ const ListTodoComponent = () => {
     navigate(`/update-todo/${id}`);
   }
 
+  function removeTodo(id) {
+    deleteTodo(id)
+      .then((response) => {
+        // Filter out the deleted todo from the todos array
+        const updatedTodos = todos.filter((todo) => todo.id !== id);
+        setTodos(updatedTodos);
+      })
+      .catch((error) =>
+        console.error("There was a problem deleting the todo:", error)
+      );
+  }
   return (
     <div className="container">
       <h2 className="text-center mt-4">List of Todos</h2>
@@ -52,6 +63,13 @@ const ListTodoComponent = () => {
                     onClick={(e) => handleUpdateClick(todo.id)}
                   >
                     Update
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    style={{ marginLeft: "10px" }}
+                    onClick={() => removeTodo(todo.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>
