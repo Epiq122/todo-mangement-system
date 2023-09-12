@@ -1,6 +1,11 @@
+import {
+  completeTodo,
+  deleteTodo,
+  getAllTodos,
+  incompleteTodo,
+} from "../services/TodoService.js";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { deleteTodo, getAllTodos } from "../services/TodoService.js";
-import { useNavigate, useParams } from "react-router-dom";
 
 const ListTodoComponent = () => {
   const [todos, setTodos] = useState([]);
@@ -13,7 +18,7 @@ const ListTodoComponent = () => {
       .catch((error) =>
         console.error("There was a problem listing the todos:", error)
       );
-  }, []);
+  }, [todos]); // Add todos as a dependency to re-run the effect when todos changes
 
   function addNewTodo() {
     navigate("/add-todo");
@@ -37,13 +42,39 @@ const ListTodoComponent = () => {
   }
 
   function markCompleteTodo(id) {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        todo.completed = true;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+    completeTodo(id)
+      .then((response) => {
+        // Find the completed todo in the todos array and update its completed status
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === id) {
+            return { ...todo, completed: true };
+          } else {
+            return todo;
+          }
+        });
+        setTodos(updatedTodos);
+      })
+      .catch((error) =>
+        console.error("There was a problem completing the todo:", error)
+      );
+  }
+
+  function markInCompleteTodo(id) {
+    incompleteTodo(id)
+      .then((response) => {
+        // Find the completed todo in the todos array and update its completed status
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === id) {
+            return { ...todo, completed: false };
+          } else {
+            return todo;
+          }
+        });
+        setTodos(updatedTodos);
+      })
+      .catch((error) =>
+        console.error("There was a problem completing the todo:", error)
+      );
   }
 
   return (
@@ -89,6 +120,13 @@ const ListTodoComponent = () => {
                   >
                     Complete
                   </button>
+                  <button
+                    className="btn btn-info"
+                    style={{ marginLeft: "10px" }}
+                    onClick={() => markInCompleteTodo(todo.id)}
+                  >
+                    Incomplete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -98,4 +136,5 @@ const ListTodoComponent = () => {
     </div>
   );
 };
+
 export default ListTodoComponent;

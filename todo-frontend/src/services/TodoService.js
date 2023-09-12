@@ -93,7 +93,22 @@ export const deleteTodo = (id) => {
 
 export const completeTodo = (id) => {
   return fetch(BASE_REST_API_URL + "/" + id + "/complete", {
-    method: "PUT",
+    method: "PATCH",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+};
+
+export const incompleteTodo = (id) => {
+  return fetch(BASE_REST_API_URL + "/" + id + "/incomplete", {
+    method: "PATCH",
   })
     .then((response) => {
       if (!response.ok) {
