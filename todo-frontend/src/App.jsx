@@ -7,6 +7,7 @@ import FooterComponent from "./components/FooterComponent.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TodoComponent from "./components/TodoComponent.jsx";
 import RegisterComponent from "./components/RegisterComponent.jsx";
+import LoginComponent from "./components/LoginComponent.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -26,6 +27,8 @@ function App() {
           <Route path="/update-todo/:id" element={<TodoComponent />} />
           {/*http://localhost:8080/register*/}
           <Route path="/register" element={<RegisterComponent />} />
+          {/*http://localhost:8080/register*/}
+          <Route path="/login" element={<LoginComponent />} />
         </Routes>
 
         <FooterComponent />
