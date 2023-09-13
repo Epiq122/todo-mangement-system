@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("api/todos")
@@ -57,7 +55,7 @@ public class TodoController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteTodo(@PathVariable("id") Long todoId){
+    public ResponseEntity<String> deleteTodo(@PathVariable("id") Long todoId) {
         todoService.deleteTodo(todoId);
         return ResponseEntity.ok("Todo deleted successfully");
     }
@@ -65,13 +63,14 @@ public class TodoController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PatchMapping("{id}/complete")
-    public ResponseEntity<TodoDto> completeTodo(@PathVariable("id") Long todoId){
+    public ResponseEntity<TodoDto> completeTodo(@PathVariable("id") Long todoId) {
         TodoDto updatedTodo = todoService.completeTodo(todoId);
         return ResponseEntity.ok(updatedTodo);
     }
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PatchMapping("{id}/incomplete")
-    public ResponseEntity<TodoDto> inCompleteTodo(@PathVariable("id") Long todoId){
+    public ResponseEntity<TodoDto> inCompleteTodo(@PathVariable("id") Long todoId) {
         TodoDto updatedTodo = todoService.inCompleteTodo(todoId);
         return ResponseEntity.ok(updatedTodo);
     }
