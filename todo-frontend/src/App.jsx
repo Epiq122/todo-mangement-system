@@ -10,7 +10,7 @@ import RegisterComponent from "./components/RegisterComponent.jsx";
 import LoginComponent from "./components/LoginComponent.jsx";
 
 function App() {
-  const [count, setCount] = useState(0);
+
 
   return (
     <>
