@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginAPICall } from "../services/AuthService.js";
+import { loginAPICall, storeToken } from "../services/AuthService.js";
 import { useNavigate } from "react-router-dom";
 
 const LoginComponent = () => {
@@ -14,6 +14,11 @@ const LoginComponent = () => {
     loginAPICall(username, password)
       .then((response) => {
         console.log(response.data);
+
+        // create token and store in basic storage
+        const token = "Basic " + window.btoa(username + ":" + password);
+        storeToken(token);
+
         navigate("/todos");
       })
       .catch((error) => {

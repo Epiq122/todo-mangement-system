@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { addTodo, getTodo, updateTodo } from "../services/TodoService.js";
+import { useEffect, useState } from "react";
+import { getTodo, saveTodo, updateTodo } from "../services/TodoService.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TodoComponent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
-  const [todoData, setTodoData] = useState(null);
 
   const navigate = useNavigate();
   const { id } = useParams();
 
   function handleSaveOrUpdate(e) {
     e.preventDefault();
+
     const todo = { title, description, completed };
+    console.log(todo);
 
     if (id) {
       updateTodo(id, todo)
-        .then((response) => {
-          console.log("Todo updated successfully:", response);
+        .then(() => {
           navigate("/todos");
         })
         .catch((error) => {
-          console.error("There was a problem updating the todo:", error);
+          console.error(error);
         });
     } else {
-      addTodo(todo)
-        .then((data) => {
-          console.log("Todo saved successfully:", data);
+      saveTodo(todo)
+        .then((response) => {
+          console.log(response.data);
           navigate("/todos");
         })
         .catch((error) => {
-          console.error("There was a problem saving the todo:", error);
+          console.error(error);
         });
     }
   }
@@ -46,21 +46,18 @@ const TodoComponent = () => {
 
   useEffect(() => {
     if (id) {
-      const fetchData = async () => {
-        try {
-          const data = await getTodo(id);
-          setTitle(data.title);
-          setDescription(data.description);
-          setCompleted(data.completed);
-        } catch (error) {
-          console.error("There was a problem fetching data:", error);
-        }
-      };
-
-      fetchData();
+      getTodo(id)
+        .then((response) => {
+          console.log(response.data);
+          setTitle(response.data.title);
+          setDescription(response.data.description);
+          setCompleted(response.data.completed);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [id]);
-
   return (
     <div className="container">
       <div className="row mt-4">

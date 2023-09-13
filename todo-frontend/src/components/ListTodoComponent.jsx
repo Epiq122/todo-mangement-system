@@ -2,10 +2,10 @@ import {
   completeTodo,
   deleteTodo,
   getAllTodos,
-  incompleteTodo,
+  inCompleteTodo,
 } from "../services/TodoService.js";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ListTodoComponent = () => {
   const [todos, setTodos] = useState([]);
@@ -13,12 +13,18 @@ const ListTodoComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    listTodos();
+  }, []);
+
+  function listTodos() {
     getAllTodos()
-      .then((data) => setTodos(data))
-      .catch((error) =>
-        console.error("There was a problem listing the todos:", error)
-      );
-  }, [todos]); // Add todos as a dependency to re-run the effect when todos changes
+      .then((response) => {
+        setTodos(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   function addNewTodo() {
     navigate("/add-todo");
@@ -31,50 +37,32 @@ const ListTodoComponent = () => {
 
   function removeTodo(id) {
     deleteTodo(id)
-      .then((response) => {
-        // Filter out the deleted todo from the todos array
-        const updatedTodos = todos.filter((todo) => todo.id !== id);
-        setTodos(updatedTodos);
+      .then(() => {
+        listTodos();
       })
-      .catch((error) =>
-        console.error("There was a problem deleting the todo:", error)
-      );
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function markCompleteTodo(id) {
     completeTodo(id)
-      .then((response) => {
-        // Find the completed todo in the todos array and update its completed status
-        const updatedTodos = todos.map((todo) => {
-          if (todo.id === id) {
-            return { ...todo, completed: true };
-          } else {
-            return todo;
-          }
-        });
-        setTodos(updatedTodos);
+      .then(() => {
+        listTodos();
       })
-      .catch((error) =>
-        console.error("There was a problem completing the todo:", error)
-      );
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function markInCompleteTodo(id) {
-    incompleteTodo(id)
-      .then((response) => {
-        // Find the completed todo in the todos array and update its completed status
-        const updatedTodos = todos.map((todo) => {
-          if (todo.id === id) {
-            return { ...todo, completed: false };
-          } else {
-            return todo;
-          }
-        });
-        setTodos(updatedTodos);
+    inCompleteTodo(id)
+      .then(() => {
+        listTodos();
       })
-      .catch((error) =>
-        console.error("There was a problem completing the todo:", error)
-      );
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
