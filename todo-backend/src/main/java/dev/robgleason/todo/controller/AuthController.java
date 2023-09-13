@@ -1,6 +1,7 @@
 package dev.robgleason.todo.controller;
 
 
+import dev.robgleason.todo.dto.LoginDto;
 import dev.robgleason.todo.dto.RegisterDto;
 import dev.robgleason.todo.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,13 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         String response = authService.register(registerDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        String response = authService.login(loginDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
