@@ -1,6 +1,7 @@
 package dev.robgleason.todo.controller;
 
 
+import dev.robgleason.todo.dto.JwtAuthResponse;
 import dev.robgleason.todo.dto.LoginDto;
 import dev.robgleason.todo.dto.RegisterDto;
 import dev.robgleason.todo.service.AuthService;
@@ -19,7 +20,6 @@ public class AuthController {
     private AuthService authService;
 
 
-
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         String response = authService.register(registerDto);
@@ -28,9 +28,11 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
 }
