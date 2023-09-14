@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import "./App.css";
 import ListTodoComponent from "./components/ListTodoComponent.jsx";
 import HeaderComponent from "./components/HeaderComponent.jsx";
@@ -10,15 +8,13 @@ import RegisterComponent from "./components/RegisterComponent.jsx";
 import LoginComponent from "./components/LoginComponent.jsx";
 
 function App() {
-
-
   return (
     <>
       <BrowserRouter>
         <HeaderComponent />
         <Routes>
           {/*http://localhost:8080*/}
-          <Route path="/" element={<ListTodoComponent />} />
+          <Route path="/" element={<LoginComponent />} />
           {/*http://localhost:8080/todos*/}
           <Route path="/todos" element={<ListTodoComponent />} />
           {/*http://localhost:8080/add-todo*/}

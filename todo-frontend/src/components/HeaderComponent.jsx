@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
+import { isUserLoggedIn } from "../services/AuthService.js";
 
 const HeaderComponent = () => {
+  const isAuthenticated = isUserLoggedIn();
   return (
     <div>
       <header>
@@ -12,30 +14,31 @@ const HeaderComponent = () => {
           </div>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <NavLink to="/todos" className="nav-link ">
-                  Todos
-                </NavLink>
-
-              </li>
+              {isAuthenticated && (
+                <li className="nav-item">
+                  <NavLink to="/todos" className="nav-link ">
+                    Todos
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/register" className="nav-link ">
-                Register
-              </NavLink>
-            </li>
+            {!isAuthenticated && (
+              <li className="nav-item">
+                <NavLink to="/register" className="nav-link ">
+                  Register
+                </NavLink>
+              </li>
+            )}
+            {!isAuthenticated && (
+              <li className="nav-item">
+                <NavLink to="/login" className="nav-link ">
+                  Login
+                </NavLink>
+              </li>
+            )}
           </ul>
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/login" className="nav-link ">
-                Login
-              </NavLink>
-            </li>
-          </ul>
-
-
         </nav>
       </header>
     </div>
